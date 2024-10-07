@@ -1,0 +1,8 @@
+Date,Day,Temperature,Humidity (%),Wind Speed (km/h),Precipitation (mm),Weather Description
+2024-08-21,Monday,25,65,12,0,Clear
+2024-08-22,Tuesday,27,70,10,0,Sunny
+2024-08-23,Wednesday,24,68,15,1.2,Partly Cloudy
+2024-08-24,Thursday,22,72,8,5,Rain
+2024-08-25,Friday,26,60,14,0,Sunny
+2024-08-26,Saturday,28,55,20,0,Windy
+2024-08-27,Sunday,23,80,18,10,Thunderstorm

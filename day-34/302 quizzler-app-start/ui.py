@@ -9,15 +9,12 @@ class MyApp:
         self.root.title("Quizzler")
         self.root.config(bg=THEME_COLOR, padx=20, pady=20)
 
-        # Initialize score and question index
         self.score = 0
         self.i = 0
 
-        # Score Label
         self.score_label = tk.Label(text=f"Score: {self.score}", font=("Helvetica", 16, "bold"), bg=THEME_COLOR, fg="white")
         self.score_label.grid(row=0, column=1, pady=10)
 
-        # Canvas for Question
         self.canvas = tk.Canvas(bg="white", height=250, width=300)
         self.question_text = self.canvas.create_text(
             150, 125,

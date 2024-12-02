@@ -2,8 +2,7 @@ import smtplib
 import random
 import datetime as dt
 
-my_email = 'chalakumsa@gmail.com'
-password = '123456789'
+
 
 # Open and read a random quote from the file
 with open("quotes.txt", "r") as f:

@@ -1,68 +1,49 @@
 import requests
 from datetime import datetime
+from dotenv import load_dotenv
 import os
+load_dotenv()
 
-APP_ID = os.environ["YOUR_APP_ID"]
-API_KEY = os.environ["YOUR_API_KEY"]
+api_key = os.getenv("API_KEY")
+secret_key = os.getenv("SECRET_KEY")
 
-exercise_endpoint = "https://trackapi.nutritionix.com/v2/natural/exercise"
-sheet_endpoint = os.environ["YOUR_SHEET_ENDPOINT"]
+nutritionix_endpoint = "https://trackapi.nutritionix.com/v2/natural/exercise"
 
-exercise_text = input("Tell me which exercises you did: ")
-
-headers = {
-    "x-app-id": APP_ID,
-    "x-app-key": API_KEY,
+headers= {
+    'Content-Type': 'application/json',
+    'x-app-id': api_key,
+    'x-app-key': secret_key
 }
 
-parameters = {
-    "query": exercise_text,
-    "gender": GENDER,
-    "weight_kg": WEIGHT_KG,
-    "height_cm": HEIGHT_CM,
-    "age": AGE
+query = input("what do you do today? : ")
+data = {
+    "query": query,
+    "gender": "male",
+    "weight_kg": 72,
+    "height_cm": 175,
+    "age": 22
 }
 
-response = requests.post(exercise_endpoint, json=parameters, headers=headers)
-result = response.json()
-print(result)
+nutritionix_response = requests.post(nutritionix_endpoint, headers=headers, json=data)
+result = nutritionix_response.json()
 
-today_date = datetime.now().strftime("%d/%m/%Y")
-now_time = datetime.now().strftime("%X")
+today_date = datetime.today().strftime('%Y-%m-%d')
+time_now = datetime.today().strftime('%H:%M:%S')
+exersice = result["exercises"][0]["name"]
+duration_min = result["exercises"][0]["duration_min"]
+nf_calories = result["exercises"][0]["nf_calories"]
 
-for exercise in result["exercises"]:
-    sheet_inputs = {
-        "workout": {
-            "date": today_date,
-            "time": now_time,
-            "exercise": exercise["name"].title(),
-            "duration": exercise["duration_min"],
-            "calories": exercise["nf_calories"]
-        }
+sheety_endpoint = "https://api.sheety.co/.../workoutTracking/workouts"
+
+sheety_input = {
+    "workout":{
+        "date":today_date,
+        "time":time_now,
+        "exercise": exersice,
+        "duration":duration_min,
+        "calories": nf_calories,
     }
+}
 
-    #No Auth
-    sheet_response = requests.post(sheet_endpoint, json=sheet_inputs)
+sheety_response = requests.post(sheety_endpoint, json=sheety_input)
 
-
-    #Basic Auth
-    sheet_response = requests.post(
-        sheet_endpoint,
-        json=sheet_inputs,
-        auth=(
-            os.environ["USERNAME"],
-            os.environ["PASSWORD"],
-        )
-    )
-
-    #Bearer Token
-    bearer_headers = {
-    "Authorization": f"Bearer {os.environ['TOKEN']}"
-    }
-    sheet_response = requests.post(
-        sheet_endpoint,
-        json=sheet_inputs,
-        headers=bearer_headers
-    )
-
-    print(sheet_response.text)

@@ -1,13 +1,27 @@
-<!DOCTYPE HTML>
+{% extends 'base.html' %}
 
-<html>
-	<head>
-		<title>Login</title>
-	</head>
-	<body>
-        <div class="container">
+{% block title %}Login{% endblock %}
+{% block styling %}
+<style>
+	.error-message {
+    color: red;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
 		<h1>Login</h1>
-        <!-- This is where our form will go. -->
+			<form method="POST" action="{{ url_for('login') }}" novalidate>
+				{{form.csrf_token}}
+				<p>{{form.email.label}} <br> {{form.email(size=30)}}</p>
+				{% for err in form.email.errors %}
+				<span class="error-message">{{err}}</span>
+				{% endfor %}
+				<p>{{form.password.label}} <br> {{form.password(size=30)}}</p>
+				{% for err in form.password.errors %}
+				<span class="error-message">{{err}}</span>
+				{% endfor %}
+				<input type="submit" value="Log In">
         </div>
-	</body>
-</html>
+{% endblock %}

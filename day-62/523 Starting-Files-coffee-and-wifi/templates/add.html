@@ -1,109 +1,29 @@
 {% extends 'bootstrap/base.html' %}
-
-{% block title %}Add A New Cafe{% endblock %}
-
-{% block content %}
-<div class="container">
-  <div class="row justify-content-center">
-    <div class="col-sm-12 col-md-8 col-lg-6">
-      <h1 class="text-center mb-4">Add a New Cafe</h1>
-
-      <!-- Form starts here -->
-      <form method="POST" action="{{ url_for('add_cafe') }}" class="needs-validation" novalidate>
-        {{ form.csrf_token }}
-
-        <!-- Name Field -->
-        <div class="form-group">
-          {{ form.name.label(class="form-label") }}
-          {{ form.name(class="form-control", size=30) }}
-          {% for err in form.name.errors %}
-          <div class="invalid-feedback">{{ err }}</div>
-          {% endfor %}
+        
+        {% block title %}Add A New Cafe{% endblock %}
+        
+        {% block content %}
+        <div class="container">
+          <div class="row">
+            <div class="col-sm-12 col-md-8">
+        
+              <h1>Add a new cafe into the database</h1>
+        
+            <form action="{{ url_for('add_cafe') }}" method="POST">
+                {{ form.csrf_token }}
+                {{ form.cafe.label }} <br> {{ form.cafe() }} <br>
+                {{ form.location.label }} <br> {{ form.location() }} <br>
+                {{ form.open_time.label }} <br> {{ form.open_time() }} <br>
+                {{ form.close_time.label }} <br> {{ form.close_time() }} <br>
+                {{ form.coffee_rating.label }} <br> {{ form.coffee_rating() }} <br>
+                {{ form.wifi_rating.label }} <br> {{ form.wifi_rating() }} <br>
+                {{ form.power_rating.label }} <br> {{ form.power_rating() }} <br>
+                {{ form.submit() }}
+            </form>
+              <p class="space-above"><a href="#">See all cafes</a></p>
+        
+            </div>
+          </div>
         </div>
-
-        <!-- Location Field -->
-        <div class="form-group">
-          {{ form.location.label(class="form-label") }}
-          {{ form.location(class="form-control", size=30) }}
-          {% for err in form.location.errors %}
-          <div class="invalid-feedback">{{ err }}</div>
-          {% endfor %}
-        </div>
-
-        <!-- Opening Time Field -->
-        <div class="form-group">
-          {{ form.opening_time.label(class="form-label") }}
-          {{ form.opening_time(class="form-control", size=30) }}
-          {% for err in form.opening_time.errors %}
-          <div class="invalid-feedback">{{ err }}</div>
-          {% endfor %}
-        </div>
-
-        <!-- Closing Time Field -->
-        <div class="form-group">
-          {{ form.closing_time.label(class="form-label") }}
-          {{ form.closing_time(class="form-control", size=30) }}
-          {% for err in form.closing_time.errors %}
-          <div class="invalid-feedback">{{ err }}</div>
-          {% endfor %}
-        </div>
-
-        <!-- Coffee Quality Field -->
-        <div class="form-group">
-          {{ form.coffee_quality.label(class="form-label") }}
-          <select class="form-control" id="coffee_quality" name="coffee_quality">
-            <option value="1">☕ (Poor)</option>
-            <option value="2">☕☕ (Below Average)</option>
-            <option value="3">☕☕☕ (Average)</option>
-            <option value="4">☕☕☕☕ (Good)</option>
-            <option value="5">☕☕☕☕☕ (Excellent)</option>
-          </select>
-          {% for err in form.coffee_quality.errors %}
-          <div class="invalid-feedback">{{ err }}</div>
-          {% endfor %}
-        </div>
-
-        <!-- Wifi Speed Field -->
-        <div class="form-group">
-          {{ form.wifi_speed.label(class="form-label") }}
-          <select class="form-control" id="wifi_speed" name="wifi_speed" title="Select Wifi Speed">
-            <option value="1">📶 (Slow)</option>
-            <option value="2">📶📶 (Below Average)</option>
-            <option value="3">📶📶📶 (Average)</option>
-            <option value="4">📶📶📶📶 (Fast)</option>
-            <option value="5">📶📶📶📶📶 (Very Fast)</option>
-          </select>
-          {% for err in form.wifi_speed.errors %}
-          <div class="invalid-feedback">{{ err }}</div>
-          {% endfor %}
-        </div>
-
-        <!-- Power Socket Field -->
-        <div class="form-group">
-          {{ form.power_socket.label(class="form-label") }}
-          <select class="form-control" id="power_socket" name="power_socket">
-            <option value="1">🔌 (None)</option>
-            <option value="2">🔌🔌 (Few)</option>
-            <option value="3">🔌🔌🔌 (Some)</option>
-            <option value="4">🔌🔌🔌🔌 (Many)</option>
-            <option value="5">🔌🔌🔌🔌🔌 (Plenty)</option>
-          </select>
-          {% for err in form.power_socket.errors %}
-          <div class="invalid-feedback">{{ err }}</div>
-          {% endfor %}
-        </div>
-
-        <!-- Submit Button -->
-        <div class="form-group text-center mt-4">
-          <button type="submit" class="btn btn-primary btn-lg">Add Cafe</button>
-        </div>
-      </form>
-
-      <!-- Link to See All Cafes -->
-      <div class="text-center mt-4">
-        <a href="#" class="btn btn-outline-secondary">See All Cafes</a>
-      </div>
-    </div>
-  </div>
-</div>
-{% endblock %}
+        
+        {% endblock %}

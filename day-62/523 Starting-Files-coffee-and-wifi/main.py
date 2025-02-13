@@ -4,39 +4,28 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, SelectField
 from wtforms.validators import DataRequired
 import csv
-import requests
-
+import os
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
 Bootstrap(app)
 
+
 class CafeForm(FlaskForm):
-    cafe = StringField('Cafe Name', validators=[DataRequired()])
-    location = StringField('Location', validators=[DataRequired()])
+    cafe = StringField('Cafe name', validators=[DataRequired()])
+    location = StringField('Location URL', validators=[DataRequired()])
     open_time = StringField('Open Time', validators=[DataRequired()])
     close_time = StringField('Close Time', validators=[DataRequired()])
-    coffee_rating = SelectField('Coffee Rating', choices=[
-        (1, '☕'), 
-        (2, '☕☕'), 
-        (3, '☕☕☕'), 
-        (4, '☕☕☕☕'), 
-        (5, '☕☕☕☕☕')
-    ], validators=[DataRequired()])
-    wifi_rating = SelectField('Wifi Rating', choices=[
-        (1, '📶'), 
-        (2, '📶📶'), 
-        (3, '📶📶📶'), 
-        (4, '📶📶📶📶'), 
-        (5, '📶📶📶📶📶')
-    ], validators=[DataRequired()])
-    power_rating = SelectField('Power Rating', choices=[
-        (1, '🔌'), 
-        (2, '🔌🔌'), 
-        (3, '🔌🔌🔌'), 
-        (4, '🔌🔌🔌🔌'), 
-        (5, '🔌🔌🔌🔌🔌')
-    ], validators=[DataRequired()])
+    coffee_rating = SelectField('Coffee Rating', 
+                                choices=['☕️', '☕☕', '☕☕☕', '☕☕☕☕', '☕☕☕☕☕'], 
+                                validators=[DataRequired()])
+    wifi_rating = SelectField('Wifi Rating',
+                                choices=['💪', '💪💪', '💪💪💪', '💪💪💪💪', '💪💪💪💪💪'], 
+                              validators=[DataRequired()])
+    power_rating = SelectField('Power Rating', 
+                                choices=['✘', '🔌', '🔌🔌', '🔌🔌🔌', '🔌🔌🔌🔌', '🔌🔌🔌🔌🔌'],
+                                validators=[DataRequired()])
+
     submit = SubmitField('Submit')
 
 # Exercise:
@@ -58,41 +47,33 @@ def home():
 def add_cafe():
     form = CafeForm()
     if form.validate_on_submit():
-        name = form.cafe.data
-        location = form.location.data
-        open_time = form.open_time.data
-        close_time = form.close_time.data
-        coffee_rating = form.coffee_rating.data
-        wifi_rating = form.wifi_rating.data
-        power_rating = form.power_rating.data
+        name = request.form['cafe']
+        location = request.form['location']
+        open_time = request.form['open_time']
+        close_time = request.form['close_time']
+        coffee_rating = request.form['coffee_rating']
+        wifi_rating = request.form['wifi_rating']
+        power_rating = request.form['power_rating']
 
-        with open('cafe-data.csv', 'a', newline='') as csv_file:
-            csv_writer = csv.writer(csv_file, delimiter=',')
+        file_path = os.path.join(os.path.dirname(__file__), 'cafe-data.csv')
+        with open(file_path, mode='a', newline='', encoding='utf-8') as csv_file:
+            csv_writer = csv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
             csv_writer.writerow([name, location, open_time, close_time, coffee_rating, wifi_rating, power_rating])
-        return redirect(url_for('home'))
+
+        return redirect(url_for('cafes'))
+
     return render_template('add.html', form=form)
 
 
 @app.route('/cafes')
 def cafes():
-    # Read the CSV file
-    with open('cafe-data.csv', newline='', encoding='utf-8') as csv_file:
-        csv_data = csv.reader(csv_file, delimiter=',')
-        
-        # Read the header row
-        headers = next(csv_data)
-        
-        # Convert rows into a list of dictionaries
-        cafes = []
-        for row in csv_data:
-            cafe_dict = {headers[i]: row[i] for i in range(len(headers))}
-            cafes.append(cafe_dict)
-        
-        # Debugging: Print the data to the console
-        print(cafes)
+    file_path = os.path.join(os.path.dirname(__file__), 'cafe-data.csv')
+    with open(file_path, mode='r', newline='', encoding='utf-8') as csv_file:
+        csv_data = csv.DictReader(csv_file, delimiter=',')
+        list_of_rows = [row for row in csv_data]
     
-    # Pass the data to the template
-    return render_template('cafes.html', cafes=cafes, headers=headers)
+    print(list_of_rows)
+    return render_template('cafes.html', cafes=list_of_rows)
 
 
 if __name__ == '__main__':

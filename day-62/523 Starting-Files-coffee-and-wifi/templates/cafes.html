@@ -1,45 +1,39 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>All Cafes</title>
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body>
-  <div class="container">
-    <div class="row">
-      <div class="col-sm-12">
-        <h1>All Cafes</h1>
+{% extends 'bootstrap/base.html' %}
 
-        <table class="table">
-          <thead>
-            <tr>
-              <!-- Dynamically generate table headers -->
-              {% for header in headers %}
-              <th>{{ header }}</th>
-              {% endfor %}
-            </tr>
-          </thead>
-          <tbody>
-            <!-- Dynamically generate table rows -->
-            {% for cafe in cafes %}
-            <tr>
-              {% for header in headers %}
-              <td>{{ cafe[header] }}</td>
-              {% endfor %}
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
+{% block title %}Restaurants{% endblock %}
 
-        <p><a href="{{ url_for('home') }}">Return to index page</a></p>
-      </div>
+{% block content %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12">
+
+      <h1>All Cafes</h1>
+
+	  <table class="table">
+          <th>Cafe</th>
+          <th>Location</th>
+          <th>Open Time</th>
+          <th>Close Time</th>
+          <th>Coffee Rating</th>
+          <th>Wifi Rating</th>
+          <th>Power Rating</th>
+          {% for cafe in cafes %}
+          <tr>
+            <td>{{ cafe['Cafe Name'] }}</td>
+            <td>{{ cafe['Location'] }}</td>
+            <td>{{ cafe['Open'] }}</td>
+            <td>{{ cafe['Close'] }}</td>
+            <td>{{ cafe['Coffee'] }}</td>
+            <td>{{ cafe['Wifi'] }}</td>
+            <td>{{ cafe['Power'] }}</td>
+          </tr>
+          {% endfor %}
+  	  </table>
+      <p><a href="#">Return to index page</a></p>
+
     </div>
   </div>
+</div>
 
-  <!-- Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+{% endblock %}

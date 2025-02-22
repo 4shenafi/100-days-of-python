@@ -9,7 +9,7 @@
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
           <div class="page-heading">
-            <h1>New Post</h1>
+            <h1>Edit Post</h1>
             <span class="subheading">You're going to make a great blog post!</span>
           </div>
         </div>
@@ -20,12 +20,12 @@
   <div class="container py-5">
     <div class="row">
       <div class="col-lg-8 col-md-10 mx-auto">
-        <form method="POST" action="{{ url_for('add_new_post') }}" novalidate>
+        <form method="POST" action="{{ url_for('edit_post', post_id=post.id) }}" novalidate>
           {{ form.hidden_tag() }}
           
           <div class="mb-3">
             {{ form.title.label(class="form-label") }}
-            {{ form.title(class="form-control", placeholder="Enter post title") }}
+            {{ form.title(class="form-control", placeholder="Enter post title", value=post.title) }}
             {% for error in form.title.errors %}
               <small class="text-danger">{{ error }}</small>
             {% endfor %}
@@ -33,7 +33,7 @@
 
           <div class="mb-3">
             {{ form.subtitle.label(class="form-label") }}
-            {{ form.subtitle(class="form-control", placeholder="Enter subtitle") }}
+            {{ form.subtitle(class="form-control", placeholder="Enter subtitle", value=post.subtitle) }}
             {% for error in form.subtitle.errors %}
               <small class="text-danger">{{ error }}</small>
             {% endfor %}
@@ -41,7 +41,7 @@
 
           <div class="mb-3">
             {{ form.author.label(class="form-label") }}
-            {{ form.author(class="form-control", placeholder="Enter author name") }}
+            {{ form.author(class="form-control", placeholder="Enter author name", value=post.author) }}
             {% for error in form.author.errors %}
               <small class="text-danger">{{ error }}</small>
             {% endfor %}
@@ -49,7 +49,7 @@
 
           <div class="mb-3">
             {{ form.img_url.label(class="form-label") }}
-            {{ form.img_url(class="form-control", placeholder="Enter image URL") }}
+            {{ form.img_url(class="form-control", placeholder="Enter image URL", value=post.img_url) }}
             {% for error in form.img_url.errors %}
               <small class="text-danger">{{ error }}</small>
             {% endfor %}
@@ -57,7 +57,7 @@
 
           <div class="mb-3">
             {{ form.body.label(class="form-label") }}
-            {{ form.body(class="form-control", rows="10", placeholder="Write your blog post here...") }}
+            {{ form.body(class="form-control", rows="10", placeholder="Write your blog post here...", value=post.body) }}
             {% for error in form.body.errors %}
               <small class="text-danger">{{ error }}</small>
             {% endfor %}
